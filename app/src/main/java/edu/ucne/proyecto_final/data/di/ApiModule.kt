@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import edu.ucne.proyecto_final.data.remote.dto.*
 import edu.ucne.proyecto_final.data.remote.usuario.UsuarioApi
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -22,7 +23,7 @@ import javax.net.ssl.X509TrustManager
 @Module
 object ApiModule {
 
-    private const val USUARIOS_BASE_URL = "https://gestionhuacalesapi.azurewebsites.net/"
+    private const val BASE_URL = "https://gestionhuacalesapi.azurewebsites.net/"
 
     @Provides
     @Singleton
@@ -68,27 +69,60 @@ object ApiModule {
         }
     }
 
-    @Provides
-    @Singleton
-    fun provideUsuariosApi(
-        moshi: Moshi,
-        client: OkHttpClient
-    ): UsuarioApi = createApi(
-        baseUrl = USUARIOS_BASE_URL,
-        moshi = moshi,
-        client = client
-    )
-
     private inline fun <reified T> createApi(
         baseUrl: String,
         moshi: Moshi,
         client: OkHttpClient
-    ): T {
-        return Retrofit.Builder()
+    ): T =
+        Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
             .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(T::class.java)
-    }
+
+
+    // -----------------------------
+    // TODOS LOS PROVIDERS DE APIs
+    // -----------------------------
+
+    @Provides @Singleton
+    fun provideUsuarioApi(moshi: Moshi, client: OkHttpClient): UsuarioApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideCategoriaApi(moshi: Moshi, client: OkHttpClient): CategoriaApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideClienteApi(moshi: Moshi, client: OkHttpClient): ClienteApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideClienteDetalleApi(moshi: Moshi, client: OkHttpClient): ClienteDetalleApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideCompraApi(moshi: Moshi, client: OkHttpClient): CompraApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideCompraDetalleApi(moshi: Moshi, client: OkHttpClient): CompraDetalleApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideInsumoApi(moshi: Moshi, client: OkHttpClient): InsumoApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideInsumoDetalleApi(moshi: Moshi, client: OkHttpClient): InsumoDetalleApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideProveedorApi(moshi: Moshi, client: OkHttpClient): ProveedorApi =
+        createApi(BASE_URL, moshi, client)
+
+    @Provides @Singleton
+    fun provideReclamoApi(moshi: Moshi, client: OkHttpClient): ReclamoApi =
+        createApi(BASE_URL, moshi, client)
 }
