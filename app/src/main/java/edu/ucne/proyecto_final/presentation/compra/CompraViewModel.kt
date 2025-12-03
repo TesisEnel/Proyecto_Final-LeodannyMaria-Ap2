@@ -107,9 +107,6 @@ class CompraViewModel @Inject constructor(
         }
     }
 
-    // -------------------------------------------------------------------------
-    //  CREAR COMPRA
-    // -------------------------------------------------------------------------
     fun createCompra() {
         val state = _uiState.value
 
